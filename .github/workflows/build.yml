@@ -44,7 +44,7 @@ jobs:
 
     - name: Push Docker image
       if: github.ref == 'refs/heads/master' # Only push on master branch
-      run: docker push rahmatali/learning::latest # Adjust the tag as needed
+      run: docker push learning/learning::latest # Adjust the tag as needed
 
     - name: Clean up Docker images
       run: docker system prune -f
