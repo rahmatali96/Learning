@@ -1,19 +1,14 @@
-# Use the official .NET Core SDK image as a base image
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 
-# Copy the .csproj and restore dependencies
-COPY *.csproj ./
-RUN dotnet restore --verbosity detailed
-
-# Copy the project files and build
-COPY . ./
-RUN dotnet publish -c Release -o out
-
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
+############################## Server build ################################
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS serverbuild
 WORKDIR /app
-COPY --from=build /app/out .
+COPY . .
+WORKDIR "/app/Learning"
+RUN dotnet publish Learning.csproj -c Release -o /app/publish
 
-# Specify the entry point for the application
-ENTRYPOINT ["dotnet", "Learning.dll"]
+FROM base AS final
+WORKDIR /app
+COPY --from=serverbuild /app/publish .
+CMD ["dotnet", "Learning.dll"]
