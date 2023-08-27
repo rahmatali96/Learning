@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Copy the .csproj and restore dependencies
 COPY *.csproj ./
-RUN dotnet restore
+RUN dotnet restore --verbosity detailed
 
 # Copy the project files and build
 COPY . ./
