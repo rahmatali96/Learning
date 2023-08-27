@@ -2,10 +2,10 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - master, dev
+      - master
   pull_request:
     branches:
-      - master, dev
+      - master
 
 jobs:
   build:
@@ -43,7 +43,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Push Docker image
-      if: github.ref == 'refs/heads/dev' # Only push on master branch
+      if: github.ref == 'refs/heads/master' # Only push on master branch
       run: docker push learning:latest # Adjust the tag as needed
 
     - name: Clean up Docker images
