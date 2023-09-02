@@ -5,7 +5,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS serverbuild
 WORKDIR /app
 COPY . .
-WORKDIR "/app/Learning"
+WORKDIR "/app"
 RUN dotnet publish Learning.csproj -c Release -o /app/publish
 
 FROM base AS final
