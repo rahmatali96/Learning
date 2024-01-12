@@ -1,42 +1,39 @@
-name: Forest CI
+name: Docker Build and Test
 
 on:
   push:
-  
+    branches:
+      - main
+
 jobs:
-  ci:
+  build-and-test:
     runs-on: ubuntu-latest
 
     services:
-      sql-server:
-        image: mcr.microsoft.com/mssql/server
+      mysql:
+        image: mysql:latest
         env:
-          SA_PASSWORD: ${{ secrets.SQL_SERVER_SA_PASSWORD }}
-          TEST_DB_NAME: YourTestDatabaseName
-          ACCEPT_EULA: Y
+          MYSQL_ROOT_PASSWORD: Post@123
+          MYSQL_DATABASE: TestDb
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: Post@123
         ports:
-          - 1433:1433
-        options: >-
-          --health-cmd="sqlcmd -S localhost -U sa -P $SA_PASSWORD -Q 'SELECT 1'" 
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
+          - "3306:3306"
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-      - name: Set up .NET Core SDK
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: 6.0.x
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1'
 
-      - name: Install packages
-        run: dotnet restore
+    - name: Build and Test
+      run: |
+        dotnet build
+        dotnet test
 
-      - name: Setup Database
-        env:
-          SA_PASSWORD: ${{ secrets.SQL_SERVER_SA_PASSWORD }}
-        run: dotnet ef database update --context YourDbContextName
-      - name: Run Tests
-        run: dotnet test
+    - name: Stop Docker Containers
+      run: docker-compose down
