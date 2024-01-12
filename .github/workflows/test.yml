@@ -28,12 +28,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1'
-
-    - name: Build and Test
-      run: |
-        dotnet build
-        dotnet test
+        dotnet-version: '6.x'
 
     - name: Stop Docker Containers
       run: docker-compose down
