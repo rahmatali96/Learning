@@ -1,6 +1,8 @@
 name: Forest CI
+
 on:
   push:
+  
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -14,7 +16,7 @@ jobs:
         ports:
           - 1433:1433
         options: >-
-          --health-cmd="sqlcmd -S localhost -U sa -P ${{ secrets.SQL_SERVER_SA_PASSWORD }} -Q 'SELECT 1'" 
+          --health-cmd="sqlcmd -S localhost -U sa -P $SA_PASSWORD -Q 'SELECT 1'" 
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
@@ -32,6 +34,8 @@ jobs:
         run: dotnet restore
 
       - name: Setup Database
+        env:
+          SA_PASSWORD: ${{ secrets.SQL_SERVER_SA_PASSWORD }}
         run: "dotnet ef database update"  # Replace with your Entity Framework migration command
 
       - name: Run Tests
