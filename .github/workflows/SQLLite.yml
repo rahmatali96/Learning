@@ -1,0 +1,37 @@
+name: Docker Build and Test
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      sqlite:
+        image: sqlite
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+          ConnectionStrings__DefaultConnection: ":memory:"
+        ports:
+          - "5432:5432"
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1'
+
+    - name: Build and Test
+      #run: |
+       # dotnet build
+        #dotnet test
+
+    - name: Cleanup
+      run: |
+        # You can add cleanup steps here if needed
