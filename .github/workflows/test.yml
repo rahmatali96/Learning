@@ -3,7 +3,7 @@ name: Docker Build and Test
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build-and-test:
@@ -28,7 +28,12 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '6.x'
+        dotnet-version: '3.1'
 
-    - name: Stop Docker Containers
-      run: docker-compose down
+    #- name: Build and Test
+     # run: |
+      #  dotnet build
+       # dotnet test
+
+    #- name: Stop Docker Containers
+     # run: docker-compose down
