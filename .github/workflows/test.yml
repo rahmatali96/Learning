@@ -1,45 +1,43 @@
-name: Unit Tests
+name: Forest CI
 
 on:
   push:
-    branches:
-      - master
-
+  
 jobs:
-  test:
+  ci:
     runs-on: ubuntu-latest
 
     services:
-      sql-server:
-        image: mcr.microsoft.com/mssql/server
+      mysql-master:
+        image: mysql:5.7
+        ports:
+          - 3306/tcp
         env:
-          SA_PASSWORD: "Post@123"
-          ACCEPT_EULA: "Y"
+          MYSQL_DATABASE: ${{ env.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ env.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_PASSWORD }}
         options: >-
-          --name sql-server-container
-          --health-cmd /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -Q "SELECT 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-          -e "SA_PASSWORD=Post@123"
-          -e "ACCEPT_EULA=Y"
-          -e GITHUB_ACTIONS=true
-          -e CI=true
+          --name=mysql-master
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '6.x'
+      - name: Set up .NET Core SDK
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
 
-    - name: Restore Dependencies
-      run: dotnet restore
+      - name: Install packages
+        run: dotnet restore
 
-    - name: Build
-      run: dotnet build --configuration Release
+      - name: Setup Database
+        run: "dotnet ef database update"  # Replace with your Entity Framework migration command
 
-    - name: Run Migrations
-      run: dotnet ef database update --configuration Release
+      - name: Run Tests
+        run: dotnet test
