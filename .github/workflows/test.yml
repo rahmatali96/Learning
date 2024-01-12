@@ -12,6 +12,7 @@ jobs:
         image: mcr.microsoft.com/mssql/server
         env:
           SA_PASSWORD: ${{ secrets.SQL_SERVER_SA_PASSWORD }}
+          TEST_DB_NAME: YourTestDatabaseName
           ACCEPT_EULA: Y
         ports:
           - 1433:1433
@@ -36,7 +37,6 @@ jobs:
       - name: Setup Database
         env:
           SA_PASSWORD: ${{ secrets.SQL_SERVER_SA_PASSWORD }}
-        run: "dotnet ef database update"  # Replace with your Entity Framework migration command
-
+        run: dotnet ef database update --context YourDbContextName
       - name: Run Tests
         run: dotnet test
