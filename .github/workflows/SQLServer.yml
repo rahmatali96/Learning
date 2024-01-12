@@ -1,4 +1,4 @@
-name: Docker Build and Test
+name: Docker Build and Test with SQL server
 on:
   push:
     branches:
