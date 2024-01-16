@@ -16,7 +16,7 @@ jobs:
         uses: 280780363/sqlserver-action@v1.0
         with:
           accept-eula: true
-          server-name: localhost
+          server-name: Learn
           instance-name: SQLExpress
           sa-password: "Post@123"
           admin-password: "Post@123" #${{ secrets.SQL_ADMIN_PASSWORD }}

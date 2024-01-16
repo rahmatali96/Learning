@@ -8,7 +8,7 @@ namespace Sentra.Test
 {
     public static class DbSetup
     {
-        private const string ServerName = "localhost\\SQLExpress";
+        private const string ServerName = "Learn\\SQLExpress";
         private static string databaseName = "learning";
         private static LearningDbContext _context;
         private static bool isAtatched = false;
@@ -17,7 +17,7 @@ namespace Sentra.Test
         {
             if (!isAtatched)
             {
-                string connectionString = "Data Source=localhost\\SQLExpress;Initial Catalog=learning;User Id=sa;Password=Post@123;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False";
+                string connectionString = "Data Source=Learn\\SQLExpress;Initial Catalog=learning;User Id=sa;Password=Post@123;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False";
                 string currentDirectory = Directory.GetCurrentDirectory();
                 string fileName = "learning.mdf";
                 var parentDirectory = Directory.GetParent(currentDirectory)?.Parent?.Parent;
@@ -34,7 +34,7 @@ namespace Sentra.Test
                     Console.WriteLine("Database attached successfully.");
                     var options = new DbContextOptionsBuilder<LearningDbContext>()
                         .UseSqlServer(connectionString)
-                        .Options;
+                        .Options;   
                     _context = new LearningDbContext(options);
                 }
                 catch (Exception ex)
