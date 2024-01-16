@@ -17,7 +17,7 @@ namespace Sentra.Test
         {
             if (!isAtatched)
             {
-                string connectionString = "Server=localhost\\SQLExpress;ProD=Lear;User Id=sa;Password=Post@123;";
+                string connectionString = "Server=localhost\\SQLExpress;Database=ProD;User Id=sa;Password=Post@123;";
 
                 //string connectionString = "Data Source=localhost\SQLExpress;Initial Catalog=learning;User Id=sa;Password=Post@123;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False";
                 string currentDirectory = Directory.GetCurrentDirectory();
