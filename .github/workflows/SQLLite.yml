@@ -6,27 +6,32 @@ on:
       - master
 
 jobs:
-  test_with_sql_server:
+  run-tests:
     runs-on: windows-latest
 
+    services:
+      mssql:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        env:
+          SA_PASSWORD: MyTestPassword
+          ACCEPT_EULA: 'Y'
+        ports:
+          - 1433:1433
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-      - name: Start SQL Server container
-        uses: docker://mcr.microsoft.com/mssql/server:2019-latest
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
         with:
-          ACCEPT_EULA: Y
-          SA_PASSWORD: ${{ secrets.SQL_SERVER_SA_PASSWORD }}
-          PORTS: 1433
+          dotnet-version: 3.1
 
-      - name: Install testing dependencies (Windows-specific commands)
-        run: choco install tSQLt.cmd  # Example for tSQLt on Windows
+      - name: Restore dependencies
+        run: dotnet restore
 
-      - name: Run tests
-        run: tSQLt.cmd run  # Execute tSQLt tests against the containerized database
-
-      - name: Report results (optional)
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: results/*
+      - name: Compile and Test from Build Script
+        shell: pwsh
+        run: .\build.ps1 ci-pr
+        env:
+          ConnectionStrings__MyConnString: "Server=localhost,1433;Initial Catalog=MyTestDb;User Id=sa;Password=MyTestPassword;"
