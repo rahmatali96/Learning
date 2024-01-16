@@ -1,36 +1,30 @@
-name: SQL Server Testing with Docker on Linux
-
+name: SQL Server Setup
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
-  run-tests:
+  setup-sql-server:
     runs-on: ubuntu-latest
-
-    services:
-      mssql:
-        image: mcr.microsoft.com/mssql/server:2019-latest
-        env:
-          SA_PASSWORD: MyTestPassword
-          ACCEPT_EULA: 'Y'
-        ports:
-          - 1433:1433
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+      - name: Set up SQL Server
+        uses: microsoft/setup-sql-server@v1
         with:
-          dotnet-version: 3.1
+          accept-eula: true
+          server-name: localhost
+          instance-name: SQLExpress
+          sa-password: "Post@123"
+          admin-password: "Post@123" #${{ secrets.SQL_ADMIN_PASSWORD }}
+          config-only: false
 
-      - name: Restore dependencies
-        run: dotnet restore
+      - name: Build and Deploy Database
+        run: |
+          # Add commands to build and deploy your database scripts here
 
-      - name: Compile and Test from Build Script
-        run: pwsh -File ${{ github.workspace }}/build.ps1 ci-pr
-        env:
-          ConnectionStrings__MyConnString: "Server=localhost,1433;Initial Catalog=MyTestDb;User Id=sa;Password=MyTestPassword;"
+      # Add additional steps as needed for your specific setup
+
