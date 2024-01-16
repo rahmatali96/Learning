@@ -24,7 +24,9 @@ jobs:
 
       - name: Build and Deploy Database
         run: |
-            dotnet build
-            dotnet test
-      # Add additional steps as needed for your specific setup
+          dotnet build
+          dotnet test --configuration Release --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+        env:
+          SQL_SERVER_CONNECTION_STRING: "Server=Learn\\SQLExpress;Database=learning;User Id=sa;Password=Post@123;"
 
+      # Add additional steps as needed for your specific setup
