@@ -32,12 +32,7 @@ jobs:
             echo "Error: SQL Server does not appear to be running on port 1433."
             exit 1 # Indicate failure to the workflow
           fi
-
-      - name: Allow Remote Connections
-        run: |
-          # Enable TCP/IP protocol
-          sqlcmd -S localhost,1433 -U "sa" -P "Post@123" -Q "EXEC sp_configure 'remote access', 1; RECONFIGURE;"
-
+          
       - name: Build and Deploy Database
         run: |
           dotnet build
