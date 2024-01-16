@@ -8,7 +8,7 @@ namespace Sentra.Test
 {
     public static class DbSetup
     {
-        private const string ServerName = "HP\\SQLEXPRESS";
+        private const string ServerName = "localhost";
         private static string databaseName = "learning";
         private static LearningDbContext _context;
         private static bool isAtatched = false;
@@ -17,7 +17,7 @@ namespace Sentra.Test
         {
             if (!isAtatched)
             {
-                string connectionString = "Data Source=HP\\SQLEXPRESS;Initial Catalog=learning;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False";
+                string connectionString = "Data Source=localhost;Initial Catalog=learning;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False";
                 string currentDirectory = Directory.GetCurrentDirectory();
                 string fileName = "learning.mdf";
                 var parentDirectory = Directory.GetParent(currentDirectory)?.Parent?.Parent;
