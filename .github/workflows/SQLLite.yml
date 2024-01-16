@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      CONNECTION_STRING: "Server=localhost,1433;Database=YourDatabase;User Id=sa;Password=YourPassword;"
+      CONNECTION_STRING: "Server=localhost,1433;Database=test;User Id=sa;Password=Post@123;"
 
     steps:
     - name: Checkout Repository
@@ -40,7 +40,7 @@ jobs:
         }
 
         # Execute database setup scripts
-        sqlcmd -S localhost -U SA -P 'YourPassword' -d master -i "path/to/setup.sql"
+        sqlcmd -S localhost -U SA -P 'Post@123' -d master -i "path/to/setup.sql"
 
     - name: Build and Test
       run: |
