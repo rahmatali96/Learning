@@ -1,34 +1,32 @@
-name: SQL Server Testing with Docker
+name: SQL Server Testing with Docker on Windows
 
 on:
   push:
     branches:
       - master
+
 jobs:
   test_with_sql_server:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+    runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3  # Check out the repository code
+      - uses: actions/checkout@v3
 
       - name: Start SQL Server container
-        uses: docker://mcr.microsoft.com/mssql/server:2019-latest  # Use the SQL Server 2019 container
+        uses: docker://mcr.microsoft.com/mssql/server:2019-latest
         with:
-          ACCEPT_EULA: Y  # Accept the End-User License Agreement
-          PORTS: 1433  # Expose the SQL Server port
+          ACCEPT_EULA: Y
+          SA_PASSWORD: ${{ secrets.SQL_SERVER_SA_PASSWORD }}
+          PORTS: 1433
 
-      - name: Install testing dependencies
-        run: |
-          dotnet tool install --global tSQLt  # Install tSQLt for testing
-          # Install any other required testing tools or frameworks here
+      - name: Install testing dependencies (Windows-specific commands)
+        run: choco install tSQLt.cmd  # Example for tSQLt on Windows
 
       - name: Run tests
-        run: |
-          tSQLt.cmd run  # Execute tSQLt tests against the containerized database
-          # Add any other commands to run additional tests here
+        run: tSQLt.cmd run  # Execute tSQLt tests against the containerized database
 
       - name: Report results (optional)
-        uses: actions/upload-artifact@v3  # Upload test results as artifacts
+        uses: actions/upload-artifact@v3
         with:
           name: test-results
           path: results/*
