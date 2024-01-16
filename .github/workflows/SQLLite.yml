@@ -2,7 +2,7 @@ name: SQL Server Setup
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   setup-sql-server:
