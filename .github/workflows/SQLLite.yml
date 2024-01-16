@@ -26,7 +26,5 @@ jobs:
         run: |
           dotnet build
           dotnet test --configuration Release --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
-        env:
-          SQL_SERVER_CONNECTION_STRING: "Server=localhost\SQLExpress;Database=learning;User Id=sa;Password=Post@123;"
-
+          sqlcmd -S localhost\SQLExpress -U sa -P "Post@123" -d learning -i ./db-scripts/your-script.sql || echo "Connection failed: $?"
       # Add additional steps as needed for your specific setup
