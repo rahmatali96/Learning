@@ -1,7 +1,9 @@
 name: SQL Server Testing with Docker
 
-on: [push, pull_request]  # Trigger the workflow on pushes or pull requests
-
+on:
+  push:
+    branches:
+      - master
 jobs:
   test_with_sql_server:
     runs-on: ubuntu-latest  # Use the latest Ubuntu runner
@@ -13,7 +15,6 @@ jobs:
         uses: docker://mcr.microsoft.com/mssql/server:2019-latest  # Use the SQL Server 2019 container
         with:
           ACCEPT_EULA: Y  # Accept the End-User License Agreement
-          SA_PASSWORD: ${{ secrets.SA_PASSWORD }}  # Set the SQL Server password from a secret
           PORTS: 1433  # Expose the SQL Server port
 
       - name: Install testing dependencies
