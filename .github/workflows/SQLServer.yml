@@ -1,37 +1,46 @@
-name: Docker Build and Test with SQL server
+name: Build and Test With SQL Server
+
 on:
   push:
     branches:
       - master
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
 
-    services:
-      sql-server:
-        image: mcr.microsoft.com/mssql/server
-        env:
-          SA_PASSWORD: Post@123!
-          ACCEPT_EULA: Y
-          MSSQL_DATABASE: master
-        ports:
-          - "1433:1433"
-        options: --health-cmd="sqlcmd -S localhost -U sa -P Post@123! -d master -Q \"SELECT 1\"" --health-interval=10s --health-timeout=5s --health-retries=3
+jobs:
+  build:
+    runs-on: windows-latest
+
+    env:
+      CONNECTION_STRING: ${{ secrets.SQL_SERVER_CONNECTION_STRING }}
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: '6.x'
+        dotnet-version: '7.x'
+
+    - name: Start SQL Server
+      run: |
+        docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Post@123' -p 1433:1433 --name sql_server_container -d mcr.microsoft.com/mssql/server:2019-latest-windowsservercore
+
+    - name: Wait for SQL Server to start
+      run: |
+        n=0
+        until [ $n -ge 30 ]
+        do
+          docker exec sql_server_container /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'Post@123' -Q "SELECT 1" && break
+          n=$((n+1))
+          sleep 1
+        done
+        if [ $n -ge 30 ]; then exit 1; fi
+
+    - name: Execute Database Setup Scripts
+      run: |
+        docker exec -it sql_server_container /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'Post@123' -d master -i path/to/setup.sql
 
     #- name: Build and Test
      # run: |
       #  dotnet build
        # dotnet test
-
-    - name: Cleanup
-      run: |
-        # You can add cleanup steps here if needed
