@@ -1,4 +1,4 @@
-name: Docker Build and Test with SQL lite
+name: Build and Test with SQL Server
 
 on:
   push:
@@ -6,32 +6,46 @@ on:
       - master
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: windows-latest
 
-    services:
-      sqlite:
-        image: sqlite
-        env:
-          ASPNETCORE_ENVIRONMENT: Development
-          ConnectionStrings__DefaultConnection: ":memory:"
-        ports:
-          - "5432:5432"
+    env:
+      CONNECTION_STRING: "Server=localhost,1433;Database=YourDatabase;User Id=sa;Password=YourPassword;"
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1'
+    - name: Setup SQL Server
+      run: |
+        # Download and install SQL Server
+        Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/?linkid=2129007" -OutFile "SQLServer2019-SSEI-Expr.exe"
+        Start-Process -Wait -FilePath "SQLServer2019-SSEI-Expr.exe" -ArgumentList "/qs", "/x:C:\SQLServer"
 
-    #- name: Build and Test
-      #run: |
-       # dotnet build
-        #dotnet test
+        # Install SQL Server
+        Start-Process -Wait -FilePath "C:\SQLServer\setup.exe" -ArgumentList "/ConfigurationFile=C:\SQLServer\ConfigurationFile.ini"
 
-    #- name: Cleanup
-     # run: |
-        # You can add cleanup steps here if needed
+        # Start SQL Server
+        Start-Service -Name "MSSQLSERVER"
+
+        # Wait for SQL Server to start
+        $timeout = 0
+        while ($timeout -lt 30 -and (Test-NetConnection -ComputerName "localhost" -Port 1433 -InformationLevel Quiet)) {
+          Start-Sleep -Seconds 1
+          $timeout++
+        }
+
+        if ($timeout -ge 30) {
+          throw "SQL Server failed to start."
+        }
+
+        # Execute database setup scripts
+        sqlcmd -S localhost -U SA -P 'YourPassword' -d master -i "path/to/setup.sql"
+
+    - name: Build and Test
+      run: |
+        # Set the connection string as an environment variable
+        $env:CONNECTION_STRING = "${{ env.CONNECTION_STRING }}"
+
+        # Your build and test commands here
+        # Example: dotnet build, dotnet test
