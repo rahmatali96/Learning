@@ -1,51 +1,33 @@
-name: Build and Test with SQL Server
+name: SQL Server Testing with Docker
 
-on:
-  push:
-    branches:
-      - master
+on: [push, pull_request]  # Trigger the workflow on pushes or pull requests
 
 jobs:
-  build:
-    runs-on: windows-latest
-
-    env:
-      CONNECTION_STRING: "Server=localhost,1433;Database=test;User Id=sa;Password=Post@123;"
+  test_with_sql_server:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      - uses: actions/checkout@v3  # Check out the repository code
 
-    - name: Setup SQL Server
-      run: |
-        # Download and install SQL Server
-        Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/?linkid=2129007" -OutFile "SQLServer2019-SSEI-Expr.exe"
-        Start-Process -Wait -FilePath "SQLServer2019-SSEI-Expr.exe" -ArgumentList "/qs", "/x:C:\SQLServer"
+      - name: Start SQL Server container
+        uses: docker://mcr.microsoft.com/mssql/server:2019-latest  # Use the SQL Server 2019 container
+        with:
+          ACCEPT_EULA: Y  # Accept the End-User License Agreement
+          SA_PASSWORD: ${{ secrets.SA_PASSWORD }}  # Set the SQL Server password from a secret
+          PORTS: 1433  # Expose the SQL Server port
 
-        # Install SQL Server
-        Start-Process -Wait -FilePath "C:\SQLServer\setup.exe" -ArgumentList "/ConfigurationFile=C:\SQLServer\ConfigurationFile.ini"
+      - name: Install testing dependencies
+        run: |
+          dotnet tool install --global tSQLt  # Install tSQLt for testing
+          # Install any other required testing tools or frameworks here
 
-        # Start SQL Server
-        Start-Service -Name "MSSQLSERVER"
+      - name: Run tests
+        run: |
+          tSQLt.cmd run  # Execute tSQLt tests against the containerized database
+          # Add any other commands to run additional tests here
 
-        # Wait for SQL Server to start
-        $timeout = 0
-        while ($timeout -lt 30 -and (Test-NetConnection -ComputerName "localhost" -Port 1433 -InformationLevel Quiet)) {
-          Start-Sleep -Seconds 1
-          $timeout++
-        }
-
-        if ($timeout -ge 30) {
-          throw "SQL Server failed to start."
-        }
-
-        # Execute database setup scripts
-        sqlcmd -S localhost -U SA -P 'Post@123' -d master -i "path/to/setup.sql"
-
-    - name: Build and Test
-      run: |
-        # Set the connection string as an environment variable
-        $env:CONNECTION_STRING = "${{ env.CONNECTION_STRING }}"
-
-        # Your build and test commands here
-        # Example: dotnet build, dotnet test
+      - name: Report results (optional)
+        uses: actions/upload-artifact@v3  # Upload test results as artifacts
+        with:
+          name: test-results
+          path: results/*
