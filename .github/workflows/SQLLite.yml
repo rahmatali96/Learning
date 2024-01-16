@@ -31,6 +31,6 @@ jobs:
         run: dotnet restore
 
       - name: Compile and Test from Build Script
-        run: pwsh -File ./build.ps1 ci-pr
+        run: pwsh -File ${{ github.workspace }}/build.ps1 ci-pr
         env:
           ConnectionStrings__MyConnString: "Server=localhost,1433;Initial Catalog=MyTestDb;User Id=sa;Password=MyTestPassword;"
