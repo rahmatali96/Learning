@@ -21,19 +21,26 @@ jobs:
           sa-password: "Post@123"
           admin-password: "Post@123" #${{ secrets.SQL_ADMIN_PASSWORD }}
           config-only: false
+
       - name: Check SQL Server Port
         run: |
-          nc -zv localhost 1433  # Adjust hostname/IP if needed
+          nc -zv localhost 1433 # Adjust hostname/IP if needed
           if [ $? -eq 0 ]; then
-          echo "SQL Server is likely running on port 1433."
+            echo "SQL Server is likely running on port 1433."
           else
-          echo "Error: SQL Server does not appear to be running on port 1433."
-          exit 1  # Indicate failure to the workflow
+            echo "Error: SQL Server does not appear to be running on port 1433."
+            exit 1 # Indicate failure to the workflow
           fi
+
+      - name: Allow Remote Connections
+        run: |
+          # Enable TCP/IP protocol
+          sqlcmd -S localhost\SQLExpress -U sa -P "Post@123" -Q "EXEC sp_configure 'remote access', 1; RECONFIGURE;"
+
       - name: Build and Deploy Database
         run: |
           dotnet build
-          sqlcmd -S localhost\SQLExpress -U sa -P "Post@123" -d product -i ./create-database.sql || echo "Database creation failed: $?"
+          # sqlcmd -S localhost\SQLExpress -U sa -P "Post@123" -d product -i ./create-database.sql || echo "Database creation failed: $?"
           sqlcmd -S localhost\SQLExpress -U sa -P "Post@123" -Q "SELECT @@VERSION" || echo "Connection failed: $?"
           dotnet test --configuration Release --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
           sqlcmd -S localhost\SQLExpress -U sa -P "Post@123" -d learning -i ./db-scripts/your-script.sql || echo "Connection failed: $?"

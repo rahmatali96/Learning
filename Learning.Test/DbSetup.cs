@@ -30,6 +30,7 @@ namespace Sentra.Test
                 Console.WriteLine("connected successfully.");
                 try
                 {
+                    server.Databases.Add(new Database { Name = databaseName });
                     //if (server.Databases.Contains(databaseName))
                     //{
                     //    Console.WriteLine("Database exist.");
@@ -40,7 +41,7 @@ namespace Sentra.Test
                     //Console.WriteLine("Database attached successfully.");
                     var options = new DbContextOptionsBuilder<LearningDbContext>()
                         .UseSqlServer(connectionString)
-                        .Options;   
+                        .Options;
                     _context = new LearningDbContext(options);
                     _context.Employees.Add(new Employee
                     {
