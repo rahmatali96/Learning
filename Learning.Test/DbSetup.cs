@@ -9,7 +9,7 @@ namespace Sentra.Test
     public static class DbSetup
     {
         private const string ServerName = "localhost\\SQLExpress";
-        private static string databaseName = "product";
+        private static string databaseName = "learning";
         private static LearningDbContext _context;
         private static bool isAtatched = false;
 
@@ -17,9 +17,9 @@ namespace Sentra.Test
         {
             if (!isAtatched)
             {
-                string connectionString = @"Server=localhost,1433;Database=product;User=sa;Password=Post@123;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False";
+                //string connectionString = @"Server=localhost,1433;Database=product;User=sa;Password=Post@123;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False";
 
-                //string connectionString = "Data Source=localhost\SQLExpress;Initial Catalog=learning;User Id=sa;Password=Post@123;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False";
+                string connectionString = "Data Source=localhost\\SQLExpress;Initial Catalog=learning;User=sa;Password=Post@123;Integrated Security=True;Connect Timeout=120;Encrypt=False;Trust Server Certificate=False";
                 string currentDirectory = Directory.GetCurrentDirectory();
                 string fileName = "learning.mdf";
                 var parentDirectory = Directory.GetParent(currentDirectory)?.Parent?.Parent;
@@ -30,28 +30,28 @@ namespace Sentra.Test
                 Console.WriteLine("connected successfully.");
                 try
                 {
-                    server.Databases.Add(new Database { Name = databaseName });
+                    ////server.Databases.Add(new Database { Name = databaseName });
                     //if (server.Databases.Contains(databaseName))
                     //{
                     //    Console.WriteLine("Database exist.");
                     //    server.DetachDatabase(databaseName, false);
                     //}
-                    //Console.WriteLine("Database attaching started.");
-                    //server.AttachDatabase(databaseName, new StringCollection { mdfFilePath });
-                    //Console.WriteLine("Database attached successfully.");
+                    Console.WriteLine("Database attaching started.");
+                    server.AttachDatabase(databaseName, new StringCollection { mdfFilePath });
+                    Console.WriteLine("Database attached successfully.");
                     var options = new DbContextOptionsBuilder<LearningDbContext>()
                         .UseSqlServer(connectionString)
                         .Options;
                     _context = new LearningDbContext(options);
-                    _context.Employees.Add(new Employee
-                    {
-                        Name = "Test",
-                    });
-                    _context.Employees.Add(new Employee
-                    {
-                        Name = "Test1",
-                    });
-                    _context.SaveChanges();
+                    //_context.Employees.Add(new Employee
+                    //{
+                    //    Name = "Test",
+                    //});
+                    //_context.Employees.Add(new Employee
+                    //{
+                    //    Name = "Test1",
+                    //});
+                    //_context.SaveChanges();
                 }
                 catch (Exception ex)
                 {
