@@ -35,7 +35,7 @@ jobs:
       - name: Allow Remote Connections
         run: |
           # Enable TCP/IP protocol
-          sqlcmd -S localhost\SQLExpress -U sa -P "Post@123" -Q "EXEC sp_configure 'remote access', 1; RECONFIGURE;"
+          sqlcmd -S localhost,1433 -U sa -P "Post@123" -Q "EXEC sp_configure 'remote access', 1; RECONFIGURE;"
 
       - name: Build and Deploy Database
         run: |
