@@ -8,7 +8,7 @@ namespace Sentra.Test
 {
     public static class DbSetup
     {
-        private const string ServerName = "Learn\\Pro";
+        private const string ServerName = "localhost\\SQLExpress";
         private static string databaseName = "learning";
         private static LearningDbContext _context;
         private static bool isAtatched = false;
@@ -17,9 +17,9 @@ namespace Sentra.Test
         {
             if (!isAtatched)
             {
-                string connectionString = "Server=Learn\\Pro;learning=Lear;User Id=sa;Password=Post@123;";
+                string connectionString = "Server=localhost\\SQLExpress;learning=Lear;User Id=sa;Password=Post@123;";
 
-                //string connectionString = "Data Source=Learn\\SQLExpress;Initial Catalog=learning;User Id=sa;Password=Post@123;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False";
+                //string connectionString = "Data Source=localhost\SQLExpress;Initial Catalog=learning;User Id=sa;Password=Post@123;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False";
                 string currentDirectory = Directory.GetCurrentDirectory();
                 string fileName = "learning.mdf";
                 var parentDirectory = Directory.GetParent(currentDirectory)?.Parent?.Parent;
@@ -27,12 +27,15 @@ namespace Sentra.Test
                 Console.WriteLine(mdfFilePath);
                 ServerConnection serverConnection = new ServerConnection(ServerName);
                 Server server = new Server(serverConnection);
+                Console.WriteLine("connected successfully.");
                 try
                 {
                     if (server.Databases.Contains(databaseName))
-                    {   
+                    {
+                        Console.WriteLine("Database exist.");
                         server.DetachDatabase(databaseName, false);
                     }
+                    Console.WriteLine("Database attaching started.");
                     server.AttachDatabase(databaseName, new StringCollection { mdfFilePath });
                     Console.WriteLine("Database attached successfully.");
                     var options = new DbContextOptionsBuilder<LearningDbContext>()
