@@ -1,39 +1,39 @@
-name: Docker Build and Test with MySQL
+# name: Docker Build and Test with MySQL
 
-on:
-  push:
-    branches:
-      - master
+# on:
+#   push:
+#     branches:
+#       - master
 
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
+# jobs:
+#   build-and-test:
+#     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:latest
-        env:
-          MYSQL_ROOT_PASSWORD: Post@123
-          MYSQL_DATABASE: TestDb
-          MYSQL_USER: testuser
-          MYSQL_PASSWORD: Post@123
-        ports:
-          - "3306:3306"
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+#     services:
+#       mysql:
+#         image: mysql:latest
+#         env:
+#           MYSQL_ROOT_PASSWORD: Post@123
+#           MYSQL_DATABASE: TestDb
+#           MYSQL_USER: testuser
+#           MYSQL_PASSWORD: Post@123
+#         ports:
+#           - "3306:3306"
+#         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+#     steps:
+#     - name: Checkout Repository
+#       uses: actions/checkout@v2
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1'
+#     - name: Setup .NET
+#       uses: actions/setup-dotnet@v1
+#       with:
+#         dotnet-version: '3.1'
 
-    #- name: Build and Test
-     # run: |
-      #  dotnet build
-       # dotnet test
+#     #- name: Build and Test
+#      # run: |
+#       #  dotnet build
+#        # dotnet test
 
-    #- name: Stop Docker Containers
-     # run: docker-compose down
+#     #- name: Stop Docker Containers
+#      # run: docker-compose down

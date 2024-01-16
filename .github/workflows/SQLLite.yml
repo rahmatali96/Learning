@@ -17,7 +17,7 @@ jobs:
         with:
           accept-eula: true
           server-name: Learn
-          instance-name: SQLExpress
+          instance-name: Pro
           sa-password: "Post@123"
           admin-password: "Post@123" #${{ secrets.SQL_ADMIN_PASSWORD }}
           config-only: false

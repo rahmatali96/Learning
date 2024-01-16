@@ -8,7 +8,7 @@ namespace Sentra.Test
 {
     public static class DbSetup
     {
-        private const string ServerName = "Learn\\SQLExpress";
+        private const string ServerName = "Learn\\Pro";
         private static string databaseName = "learning";
         private static LearningDbContext _context;
         private static bool isAtatched = false;
@@ -17,7 +17,7 @@ namespace Sentra.Test
         {
             if (!isAtatched)
             {
-                string connectionString = "Server=Learn\\SQLExpress;learning=Lear;User Id=sa;Password=Post@123;";
+                string connectionString = "Server=Learn\\Pro;learning=Lear;User Id=sa;Password=Post@123;";
 
                 //string connectionString = "Data Source=Learn\\SQLExpress;Initial Catalog=learning;User Id=sa;Password=Post@123;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False";
                 string currentDirectory = Directory.GetCurrentDirectory();
