@@ -30,18 +30,27 @@ namespace Sentra.Test
                 Console.WriteLine("connected successfully.");
                 try
                 {
-                    if (server.Databases.Contains(databaseName))
-                    {
-                        Console.WriteLine("Database exist.");
-                        server.DetachDatabase(databaseName, false);
-                    }
-                    Console.WriteLine("Database attaching started.");
-                    server.AttachDatabase(databaseName, new StringCollection { mdfFilePath });
-                    Console.WriteLine("Database attached successfully.");
+                    //if (server.Databases.Contains(databaseName))
+                    //{
+                    //    Console.WriteLine("Database exist.");
+                    //    server.DetachDatabase(databaseName, false);
+                    //}
+                    //Console.WriteLine("Database attaching started.");
+                    //server.AttachDatabase(databaseName, new StringCollection { mdfFilePath });
+                    //Console.WriteLine("Database attached successfully.");
                     var options = new DbContextOptionsBuilder<LearningDbContext>()
                         .UseSqlServer(connectionString)
                         .Options;   
                     _context = new LearningDbContext(options);
+                    _context.Employees.Add(new Employee
+                    {
+                        Name= "Test",
+                    });
+                    _context.Employees.Add(new Employee
+                    {
+                        Name = "Test1",
+                    });
+                    _context.SaveChanges();
                 }
                 catch (Exception ex)
                 {
