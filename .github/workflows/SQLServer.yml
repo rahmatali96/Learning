@@ -23,7 +23,7 @@ jobs:
 
     - name: Start SQL Server
       run: |
-        docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Post@123' -p 1433:1433 --name sql_server_container -d mcr.microsoft.com/mssql/server
+        docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Post@123' -p 1433:1433 --name sql_server_container -d mcr.microsoft.com/mssql/server:2019-CU12-ubuntu-20.04
 
     - name: Wait for SQL Server to start
       run: |
