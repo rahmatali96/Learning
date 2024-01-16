@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build and Test With SQL Server
 
 on:
   push:
@@ -19,18 +19,28 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: '6.x'  # Adjust as needed
+        dotnet-version: '7.x'
 
-    - name: Build and Test
+    - name: Start SQL Server
       run: |
-        dotnet build
-        dotnet test
+        docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Post@123' -p 1433:1433 --name sql_server_container -d mcr.microsoft.com/mssql/server
 
-    #- name: Setup SQL Server
-      #run: |
-        # Your SQL Server setup commands here
-        # Create and initialize the temporary database
+    - name: Wait for SQL Server to start
+      run: |
+        n=0
+        until [ $n -ge 30 ]
+        do
+          docker exec sql_server_container /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'Post@123' -Q "SELECT 1" && break
+          n=$((n+1))
+          sleep 1
+        done
+        if [ $n -ge 30 ]; then exit 1; fi
 
-    #- name: Run Tests with SQL Server
+    - name: Execute Database Setup Scripts
+      run: |
+        docker exec -it sql_server_container /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'Post@123' -d master -i path/to/setup.sql
+
+    #- name: Build and Test
      # run: |
-        # Run tests that interact with SQL Server
+      #  dotnet build
+       # dotnet test
