@@ -33,6 +33,7 @@ jobs:
       - name: Build and Deploy Database
         run: |
           dotnet build
+          sqlcmd -S localhost\SQLExpress -U sa -P "Post@123" -d product -i ./create-database.sql || echo "Database creation failed: $?"
           sqlcmd -S localhost\SQLExpress -U sa -P "Post@123" -Q "SELECT @@VERSION" || echo "Connection failed: $?"
           dotnet test --configuration Release --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
           sqlcmd -S localhost\SQLExpress -U sa -P "Post@123" -d learning -i ./db-scripts/your-script.sql || echo "Connection failed: $?"
