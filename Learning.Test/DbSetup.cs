@@ -24,6 +24,7 @@ namespace Sentra.Test
                 string fileName = "learning.mdf";
                 var parentDirectory = Directory.GetParent(currentDirectory)?.Parent?.Parent;
                 string mdfFilePath = Path.Combine(parentDirectory.FullName, fileName);
+                Console.WriteLine(mdfFilePath);
                 ServerConnection serverConnection = new ServerConnection(ServerName);
                 Server server = new Server(serverConnection);
                 try
