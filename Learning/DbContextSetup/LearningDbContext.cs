@@ -4,14 +4,20 @@ namespace Learning.DbContextSetup
 {
     public class LearningDbContext : DbContext
     {
-        public LearningDbContext()
+        public DbSet<Employee> Employees { get; set; }
+
+        public LearningDbContext(DbContextOptions<LearningDbContext> options) : base(options)
         {
         }
 
-        public LearningDbContext(DbContextOptions<LearningDbContext> options)
-            : base(options)
+        // You can also include the default constructor for other scenarios
+        public LearningDbContext()
         {
         }
-        public DbSet<Employee> Employees { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Data Source=learning.db"); // Replace with your connection string
+        }
+
     }
 }

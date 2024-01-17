@@ -11,9 +11,9 @@ namespace Learning.Test
             _context = new LearningDbContext();
         }
         [SetUp]
-        public async Task SetupAsync()
+        public void Setup()
         {
-            _context = await DbSetup.AttachDatabaseAsync();
+            _context = DbSetup.AttachDatabase();
         }
 
         [Test]
