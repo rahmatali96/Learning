@@ -24,8 +24,14 @@ jobs:
           # SQLite connection string
           connection_string="Data Source=mydatabase.db;Version=3;"
 
+          # Debugging step
+          - name: Debugging
+            run: |
+              ls -R
+              cat ./create-database.sql
+
           # Create SQLite database
-          sqlite3 mydatabase.db < ./create-database.sql
+          sqlite3 mydatabase.db < create-database.sql
 
           # Run tests and other tasks
           dotnet test --configuration Release --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
