@@ -17,7 +17,8 @@ namespace Sentra.Test
         {
             if (!isAtatched)
             {
-                string connectionString = @"Server=localhost\\SQLExpress;Database=learning;User=sa;Password=Post@123;";
+                //string connectionString = @"Server=localhost\\SQLExpress;Database=learning;User=sa;Password=Post@123;";
+                string connectionString = "Data Source=learning.db;Version=3;";
 
                 //string connectionString = "Data Source=localhost\\SQLExpress;Initial Catalog=learning;User=sa;Password=Post@123;Integrated Security=True;Connect Timeout=120;Encrypt=False;Trust Server Certificate=False";
                 string currentDirectory = Directory.GetCurrentDirectory();
@@ -40,7 +41,7 @@ namespace Sentra.Test
                     server.AttachDatabase(databaseName, new StringCollection { mdfFilePath });
                     Console.WriteLine("Database attached successfully.");
                     var options = new DbContextOptionsBuilder<LearningDbContext>()
-                        .UseSqlServer(connectionString)
+                        .UseSqlite(connectionString)
                         .Options;
                     _context = new LearningDbContext(options);
                     _context.Employees.Add(new Employee

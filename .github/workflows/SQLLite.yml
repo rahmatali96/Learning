@@ -1,43 +1,33 @@
-name: SQL Server Setup
+name: SQLite Setup
 on:
   push:
     branches:
       - master
 
 jobs:
-  setup-sql-server:
+  setup-sqlite:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Set up SQL Server
-        uses: 280780363/sqlserver-action@v1.0
-        with:
-          accept-eula: true
-          server-name: localhost
-          instance-name: SQLExpress
-          sa-password: "Post@123"
-          sa-user: "sa"  # Use double quotes if the value contains special characters
-          admin-password: "Post@123" #${{ secrets.SQL_ADMIN_PASSWORD }}
-          config-only: false
-
-      - name: Check SQL Server Port
-        run: |
-          nc -zv localhost 1433 # Adjust hostname/IP if needed
-          if [ $? -eq 0 ]; then
-            echo "SQL Server is likely running on port 1433."
-          else
-            echo "Error: SQL Server does not appear to be running on port 1433."
-            exit 1 # Indicate failure to the workflow
-          fi
-          
       - name: Build and Deploy Database
         run: |
           dotnet build
-          # sqlcmd -S localhost\SQLExpress -U "sa" -P "Post@123" -d product -i ./create-database.sql || echo "Database creation failed: $?"
-          sqlcmd -S localhost\SQLExpress -U "sa" -P "Post@123" -Q "SELECT @@VERSION" || echo "Connection failed: $?"
+          # Perform any other necessary build steps
+
+          # Install SQLite
+          sudo apt-get update -y
+          sudo apt-get install -y sqlite3 libsqlite3-dev
+
+          # SQLite connection string
+          connection_string="Data Source=mydatabase.db;Version=3;"
+
+          # Create SQLite database
+          sqlite3 mydatabase.db < create-database.sql
+
+          # Run tests and other tasks
           dotnet test --configuration Release --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
-          sqlcmd -S localhost\SQLExpress -U "sa" -P "Post@123" -d learning -i ./db-scripts/your-script.sql || echo "Connection failed: $?"
+          sqlite3 mydatabase.db < db-scripts/your-script.sql
       # Add additional steps as needed for your specific setup
