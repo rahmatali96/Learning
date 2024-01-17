@@ -1,39 +1,27 @@
-name: SQLite Setup
-on:
-  push:
-    branches:
-      - master
+name: Test and Build .NET Project with SQLite
+
+on: [push] # Trigger the workflow on push events
 
 jobs:
-  setup-sqlite:
-    runs-on: ubuntu-latest
+  build-and-test:
+    runs-on: ubuntu-latest # Specify the runner environment
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3 # Checkout the repository code
 
-      - name: Build and Deploy Database
-        run: |
-          dotnet build
-          # Perform any other necessary build steps
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "7.0.x" # Specify the desired .NET version
 
-          # Install SQLite
-          sudo apt-get update -y
-          sudo apt-get install -y sqlite3 libsqlite3-dev
+      - name: Install SQLite
+        run: sudo apt-get install sqlite3
 
-          # SQLite connection string
-          connection_string="Data Source=mydatabase.db;Version=3;"
+      - name: Install NuGet dependencies
+        run: dotnet restore
 
-          # Debugging step
-          - name: Debugging
-            run: |
-              ls -R
-              cat ./create-database.sql
+      - name: Build project
+        run: dotnet build
 
-          # Create SQLite database
-          sqlite3 mydatabase.db < create-database.sql
-
-          # Run tests and other tasks
-          dotnet test --configuration Release --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
-          sqlite3 mydatabase.db < db-scripts/your-script.sql
-      # Add additional steps as needed for your specific setup
+      - name: Run tests
+        run: dotnet test
