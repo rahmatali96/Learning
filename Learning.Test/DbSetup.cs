@@ -17,9 +17,9 @@ namespace Sentra.Test
         {
             if (!isAtatched)
             {
-                //string connectionString = @"Server=localhost,1433;Database=product;User=sa;Password=Post@123;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False";
+                string connectionString = @"Server=localhost\\SQLExpress;Database=learning;User=sa;Password=Post@123;";
 
-                string connectionString = "Data Source=localhost\\SQLExpress;Initial Catalog=learning;User=sa;Password=Post@123;Integrated Security=True;Connect Timeout=120;Encrypt=False;Trust Server Certificate=False";
+                //string connectionString = "Data Source=localhost\\SQLExpress;Initial Catalog=learning;User=sa;Password=Post@123;Integrated Security=True;Connect Timeout=120;Encrypt=False;Trust Server Certificate=False";
                 string currentDirectory = Directory.GetCurrentDirectory();
                 string fileName = "learning.mdf";
                 var parentDirectory = Directory.GetParent(currentDirectory)?.Parent?.Parent;
@@ -43,15 +43,15 @@ namespace Sentra.Test
                         .UseSqlServer(connectionString)
                         .Options;
                     _context = new LearningDbContext(options);
-                    //_context.Employees.Add(new Employee
-                    //{
-                    //    Name = "Test",
-                    //});
-                    //_context.Employees.Add(new Employee
-                    //{
-                    //    Name = "Test1",
-                    //});
-                    //_context.SaveChanges();
+                    _context.Employees.Add(new Employee
+                    {
+                        Name = "Test",
+                    });
+                    _context.Employees.Add(new Employee
+                    {
+                        Name = "Test1",
+                    });
+                    _context.SaveChanges();
                 }
                 catch (Exception ex)
                 {
