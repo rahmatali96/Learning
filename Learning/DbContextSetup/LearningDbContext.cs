@@ -6,7 +6,7 @@ namespace Learning.DbContextSetup
     {
         public DbSet<Employee> Employees { get; set; }
 
-        public LearningDbContext(DbContextOptions<LearningDbContext> options) : base(options)
+        public LearningDbContext(DbContextOptions options) : base(options)
         {
         }
 
@@ -18,6 +18,5 @@ namespace Learning.DbContextSetup
         {
             optionsBuilder.UseSqlite("Data Source=learning.db"); // Replace with your connection string
         }
-
     }
 }
