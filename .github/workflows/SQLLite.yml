@@ -4,17 +4,18 @@ on:
    push:
      branches:
        - master
+
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest # Specify the runner environment
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3 # Checkout the repository code
+      - uses: actions/checkout@v3
 
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "7.0.x" # Specify the desired .NET version
+          dotnet-version: "7.0.x"
 
       - name: Install SQLite
         run: sudo apt-get install sqlite3
@@ -29,17 +30,17 @@ jobs:
         run: |
           dotnet tool install dotnet-coverage
           dotnet tool run dotnet-coverage collect -f cobertura -o Learning.Test.cobertura.xml dotnet test
-          dotnet tool run dotnet-coverage merge --remove-input-files -o ${{github.workspace}}/coverage.xml -f cobertura -r *.cobertura.xml        
-      
+          dotnet tool run dotnet-coverage merge --remove-input-files -o ${{github.workspace}}/coverage.xml -f cobertura -r *.cobertura.xml
+
       - name: Upload coverage reports to Codecov
-      - uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
-          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos 
-          directory: ${{github.workspace}}
-          files: ./coverage.xml # optional
-          flags: unittests # optional
-          name: codecov-learning # optional
-          fail_ci_if_error: true # optional (default = false)
-          verbose: true # optional (default = false)
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ${{ github.workspace }}
+          files: ./coverage.xml
+          flags: unittests
+          name: codecov-learning
+          fail_ci_if_error: true
+          verbose: true
