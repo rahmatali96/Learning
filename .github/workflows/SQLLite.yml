@@ -1,5 +1,4 @@
 name: Test and Build .NET Project with SQLite
-
 on:
    push:
       branches:
@@ -7,34 +6,26 @@ on:
    pull_request:
       branches:
       - master
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "7.0.x"
-
       - name: Install SQLite
         run: sudo apt-get install sqlite3
-
       - name: Install NuGet dependencies
         run: dotnet restore
-
       - name: Build project
         run: dotnet build
-
       - name: Run tests
         run: |
           dotnet tool install dotnet-coverage
           dotnet tool run dotnet-coverage collect -f cobertura -o Learning.Test.cobertura.xml dotnet test
           dotnet tool run dotnet-coverage merge --remove-input-files -o ${{github.workspace}}/coverage.xml -f cobertura -r *.cobertura.xml
-
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:
