@@ -33,11 +33,11 @@ jobs:
       - uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        #with:
-         # token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos 
-          #directory: ${{github.workspace}}
-          #files: ./coverage.xml # optional
-          #flags: unittests # optional
-          #name: codecov-learning # optional
-          #fail_ci_if_error: true # optional (default = false)
-          #verbose: true # optional (default = false)
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos 
+          directory: ${{github.workspace}}
+          files: ./coverage.xml # optional
+          flags: unittests # optional
+          name: codecov-learning # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)
