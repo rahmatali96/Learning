@@ -28,12 +28,16 @@ jobs:
           dotnet tool install dotnet-coverage
           dotnet tool run dotnet-coverage collect -f cobertura -o Learning.Test.cobertura.xml dotnet test
           dotnet tool run dotnet-coverage merge --remove-input-files -o ${{github.workspace}}/coverage.xml -f cobertura -r *.cobertura.xml        
+      
+      - name: Upload coverage reports to Codecov
       - uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos 
-          directory: ${{github.workspace}}
-          files: ./coverage.xml # optional
-          flags: unittests # optional
-          name: codecov-learning # optional
-          fail_ci_if_error: true # optional (default = false)
-          verbose: true # optional (default = false)
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        #with:
+         # token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos 
+          #directory: ${{github.workspace}}
+          #files: ./coverage.xml # optional
+          #flags: unittests # optional
+          #name: codecov-learning # optional
+          #fail_ci_if_error: true # optional (default = false)
+          #verbose: true # optional (default = false)
