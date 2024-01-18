@@ -1,7 +1,9 @@
 name: Test and Build .NET Project with SQLite
 
-on: [push] # Trigger the workflow on push events
-
+on:
+   push:
+     branches:
+       - master
 jobs:
   build-and-test:
     runs-on: ubuntu-latest # Specify the runner environment
