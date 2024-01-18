@@ -26,7 +26,7 @@ jobs:
       - name: Run tests
         run: |
           dotnet tool install dotnet-coverage
-          dotnet tool run dotnet-coverage collect -f cobertura -o Sentra.Test.cobertura.xml dotnet test ./Learning.Test/Learning.Test.csproj
+          dotnet tool run dotnet-coverage collect -f cobertura -o Sentra.Test.cobertura.xml dotnet test ./Learning.Test.csproj
           dotnet tool run dotnet-coverage merge --remove-input-files -o ${{github.workspace}}/coverage.xml -f cobertura -r *.cobertura.xml        
       - uses: codecov/codecov-action@v3
         with:
@@ -34,6 +34,6 @@ jobs:
           directory: ${{github.workspace}}
           files: ./coverage.xml # optional
           flags: unittests # optional
-          name: codecov-theraparea # optional
+          name: codecov-learning # optional
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)
