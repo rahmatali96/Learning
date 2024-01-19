@@ -29,6 +29,19 @@ jobs:
       - name: Install SQLite
         run: sudo apt-get install sqlite3
         
+      - name: Create Downloads Folder
+        run: mkdir -p $GITHUB_WORKSPACE/downloads
+
+      - name: Download File
+        run: |
+          # Replace "URL_TO_YOUR_FILE" with the actual URL of the file you want to download
+          curl -O https://sentraworld-my.sharepoint.com/:u:/g/personal/rahmat_ali_sentra_world/EX3xLF3Z0qtBu0XYn_Jzif8BZD_yG_gn7wQByCnM8pJi1w?e=hLt2sH
+
+      - name: Show Downloaded File
+        run: |
+          ls -al $GITHUB_WORKSPACE/downloads   # List files in the downloads directory
+          # Add any other commands to verify or manipulate the downloaded file
+        
       - name: Run tests
         run: |
           dotnet tool install dotnet-coverage
