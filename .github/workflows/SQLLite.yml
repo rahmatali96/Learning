@@ -29,11 +29,18 @@ jobs:
       - name: Install SQLite
         run: sudo apt-get install sqlite3
         
-      - name: Download File
+      - name: Download and Unzip
         run: |
-          # Replace "URL_TO_YOUR_FILE" with the actual URL of the file you want to download
-          curl -o $GITHUB_WORKSPACE/Learning.Test/learning.db https://promactinfotech1-my.sharepoint.com/:u:/g/personal/rahmatali_promactinfo_com/EQCOQpLAXkNHt1OzwdpBykgBWybic7Yog0leQrBlCcDaFA?e=f6Z6GC
-          curl -o $GITHUB_WORKSPACE/Learning.Test/steelco.db https://sentraworld-my.sharepoint.com/:u:/g/personal/rahmat_ali_sentra_world/EX3xLF3Z0qtBu0XYn_Jzif8BZD_yG_gn7wQByCnM8pJi1w?e=hLt2sH
+            curl -o $GITHUB_WORKSPACE/Learning.Test/learning.zip https://promactinfotech1-my.sharepoint.com/:u:/g/personal/rahmatali_promactinfo_com/EVSKuEdPTUdBpvg3eQNNr0QB7SbP4GyemsYT9VRDJ926ew?e=yCfnNP
+            unzip $GITHUB_WORKSPACE/Learning.Test/learning.zip
+
+      - name: Display extracted files
+        run: ls -R my_project
+         
+      #- name: Download File
+       # run: |
+        #  curl -o $GITHUB_WORKSPACE/Learning.Test/learning.db https://promactinfotech1-my.sharepoint.com/:u:/g/personal/rahmatali_promactinfo_com/EQCOQpLAXkNHt1OzwdpBykgBWybic7Yog0leQrBlCcDaFA?e=f6Z6GC
+         # curl -o $GITHUB_WORKSPACE/Learning.Test/steelco.db https://sentraworld-my.sharepoint.com/:u:/g/personal/rahmat_ali_sentra_world/EX3xLF3Z0qtBu0XYn_Jzif8BZD_yG_gn7wQByCnM8pJi1w?e=hLt2sH
 
       - name: Show Downloaded File
         run: |
