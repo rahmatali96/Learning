@@ -36,7 +36,8 @@ jobs:
       - name: Display extracted files
         run: |
            ls -al $GITHUB_WORKSPACE/Learning.Test   # List files in the Learning.Test directory
-           ls -R $GITHUB_WORKSPACE/Learning.Test/learning.zip
+           unzip learning.zip -d $GITHUB_WORKSPACE/Learning.Test
+           ls -R $GITHUB_WORKSPACE/Learning.Test
          
       #- name: Download File
        # run: |
