@@ -23,8 +23,8 @@ jobs:
       - name: Install SQLite
         run: sudo apt-get install sqlite3
 
-      - name: Install NuGet dependencies
-        run: dotnet restore
+      #- name: Install NuGet dependencies
+       # run: dotnet restore
 
       - name: Build project
         run: dotnet build
