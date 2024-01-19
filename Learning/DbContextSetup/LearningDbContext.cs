@@ -16,7 +16,7 @@ namespace Learning.DbContextSetup
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=learning.db"); // Replace with your connection string
+            //optionsBuilder.UseSqlite("Data Source=learning.db"); // Replace with your connection string
         }
     }
 }

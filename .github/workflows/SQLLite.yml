@@ -32,6 +32,7 @@ jobs:
       - name: Download File
         run: |
           # Replace "URL_TO_YOUR_FILE" with the actual URL of the file you want to download
+          curl -o $GITHUB_WORKSPACE/Learning.Test/learning.db https://promactinfotech1-my.sharepoint.com/:u:/g/personal/rahmatali_promactinfo_com/EQCOQpLAXkNHt1OzwdpBykgBWybic7Yog0leQrBlCcDaFA?e=f6Z6GC
           curl -o $GITHUB_WORKSPACE/Learning.Test/steelco.db https://sentraworld-my.sharepoint.com/:u:/g/personal/rahmat_ali_sentra_world/EX3xLF3Z0qtBu0XYn_Jzif8BZD_yG_gn7wQByCnM8pJi1w?e=hLt2sH
 
       - name: Show Downloaded File

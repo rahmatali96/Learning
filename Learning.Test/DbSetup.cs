@@ -12,31 +12,17 @@ namespace Sentra.Test
         {
             if (!isAtatched)
             {
-                string connectionString = "Data Source=learning.db;";
                 try
                 {
+                    string currentDirectory = Directory.GetCurrentDirectory();
+                    string fileName = "learning.db";
+                    var parentDirectory = Directory.GetParent(currentDirectory)?.Parent?.Parent;
+                    string filePath = Path.Combine(parentDirectory.FullName, fileName);
+                    string connectionString = $"Data Source={filePath};";
                     var options = new DbContextOptionsBuilder<LearningDbContext>()
                         .UseSqlite(connectionString)
                         .Options;
-
-                    using var _context = new LearningDbContext(options);
-                    _context.Database.EnsureDeleted(); // Ensure the database is created
-
-                    _context.Database.EnsureCreated(); // Ensure the database is created
-
-                    _context.Employees.Add(new Employee
-                    {
-                        Name = "Test",
-                    });
-
-                    _context.Employees.Add(new Employee
-                    {
-                        Name = "Test1",
-                    });
-
-                    _context.SaveChanges();
-                    Console.WriteLine(_context.Employees.Count());
-                    Console.WriteLine("Employees added to the database.");
+                    _context = new LearningDbContext(options);
                 }
                 catch (Exception ex)
                 {
