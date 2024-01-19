@@ -31,7 +31,8 @@ jobs:
         
       - name: Download and Unzip
         run: |
-            curl -o $GITHUB_WORKSPACE/Learning/Learning/Learning.Test/learning.zip https://promactinfotech1-my.sharepoint.com/:u:/g/personal/rahmatali_promactinfo_com/EVSKuEdPTUdBpvg3eQNNr0QB7SbP4GyemsYT9VRDJ926ew?e=yCfnNP
+            curl -o $GITHUB_WORKSPACE/Learning.Test/learning.zip https://promactinfotech1-my.sharepoint.com/:u:/g/personal/rahmatali_promactinfo_com/EVSKuEdPTUdBpvg3eQNNr0QB7SbP4GyemsYT9VRDJ926ew?e=yCfnNP
+      
       - name: Display extracted files
         run: ls -R $GITHUB_WORKSPACE/Learning/Learning/Learning.Test/learning.zip
          
