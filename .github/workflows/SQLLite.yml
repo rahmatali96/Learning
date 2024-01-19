@@ -34,9 +34,14 @@ jobs:
            # Assuming you have a file URL, replace with your actual URL
            curl -L -o learning.zip https://promactinfotech1-my.sharepoint.com/:u:/g/personal/rahmatali_promactinfo_com/EVSKuEdPTUdBpvg3eQNNr0QB7SbP4GyemsYT9VRDJ926ew?e=yCfnNP
       
-      - name: Unzip File
+      - name: Debug File Information
         run: |
-           unzip -q learning.zip -d GITHUB_WORKSPACE/Learning.Test
+          echo "File Size: $(du -h learning.zip)"
+          echo "File Content: $(file learning.zip)"
+
+      - name: Unzip File
+        run: unzip -v learning.zip
+          -d GITHUB_WORKSPACE/Learning.Test
 
       - name: Display Unzipped Files
         run: ls -R GITHUB_WORKSPACE/Learning.Test
