@@ -31,15 +31,12 @@ jobs:
         
       - name: Download File
         run: |
-           #curl -L -o learning.zip https://promactinfotech1-my.sharepoint.com/:u:/g/personal/rahmatali_promactinfo_com/EVSKuEdPTUdBpvg3eQNNr0QB7SbP4GyemsYT9VRDJ926ew?e=yCfnNP
-             ls -R $GITHUB_WORKSPACE/Learning.Test 
              curl -L -o learning.zip https://promactinfotech1-my.sharepoint.com/:u:/g/personal/rahmatali_promactinfo_com/EVSKuEdPTUdBpvg3eQNNr0QB7SbP4GyemsYT9VRDJ926ew?e=yCfnNP
-             ls -R $GITHUB_WORKSPACE/Learning.Test 
-             unzip -q learning.zip -d Learning
              ls -R $GITHUB_WORKSPACE/Learning.Test 
 
       - name: Unzip File
-        run: unzip -v learning.zip -d $GITHUB_WORKSPACE/Learning.Test
+        run: |
+            unzip -v learning.zip -d $GITHUB_WORKSPACE/Learning.Test
 
       - name: Show Downloaded File
         run: |
