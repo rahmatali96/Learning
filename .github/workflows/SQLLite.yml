@@ -36,7 +36,7 @@ jobs:
 
       - name: Unzip File
         run: |
-            unzip -v learning.zip
+            unzip -v $GITHUB_WORKSPACE/Learning.Test/learning.zip
 
       - name: Show Downloaded File
         run: |
