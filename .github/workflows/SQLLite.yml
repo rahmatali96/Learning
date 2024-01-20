@@ -31,20 +31,16 @@ jobs:
         
       - name: Download File
         run: |
-           # Assuming you have a file URL, replace with your actual URL
+           #curl -L -o learning.zip https://promactinfotech1-my.sharepoint.com/:u:/g/personal/rahmatali_promactinfo_com/EVSKuEdPTUdBpvg3eQNNr0QB7SbP4GyemsYT9VRDJ926ew?e=yCfnNP
+             ls -R $GITHUB_WORKSPACE/Learning.Test 
              curl -L -o learning.zip https://promactinfotech1-my.sharepoint.com/:u:/g/personal/rahmatali_promactinfo_com/EVSKuEdPTUdBpvg3eQNNr0QB7SbP4GyemsYT9VRDJ926ew?e=yCfnNP
-      
-      - name: Debug File Information
-        run: |
-          echo "File Size: $(du -h learning.zip)"
-          echo "File Content: $(file learning.zip)"
+             ls -R $GITHUB_WORKSPACE/Learning.Test 
+             unzip -q learning.zip -d Learning
+             ls -R $GITHUB_WORKSPACE/Learning.Test 
 
       - name: Unzip File
-        run: unzip -v learning.zip -d GITHUB_WORKSPACE/Learning.Test
+        run: unzip -v learning.zip -d $GITHUB_WORKSPACE/Learning.Test
 
-      - name: Display Unzipped Files
-        run: ls -R GITHUB_WORKSPACE/Learning.Test
-        
       - name: Show Downloaded File
         run: |
           ls -al $GITHUB_WORKSPACE/Learning.Test   # List files in the Learning.Test directory
