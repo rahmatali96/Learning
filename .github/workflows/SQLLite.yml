@@ -20,9 +20,6 @@ jobs:
         with:
           dotnet-version: "7.0.x"
 
-      #- name: Install NuGet dependencies
-       # run: dotnet restore
-
       - name: Build project
         run: dotnet build
 
@@ -33,6 +30,10 @@ jobs:
         run: |
              curl -L -o $GITHUB_WORKSPACE/Learning.Test/learning.zip https://promactinfotech1-my.sharepoint.com/:u:/g/personal/rahmatali_promactinfo_com/EVSKuEdPTUdBpvg3eQNNr0QB7SbP4GyemsYT9VRDJ926ew?e=yCfnNP
              ls -R $GITHUB_WORKSPACE/Learning.Test 
+      - name: Debug File Information
+        run: |
+          echo "File Size: $(du -h $GITHUB_WORKSPACE/Learning.Test/learning.zip)"
+          echo "File Content: $(file $GITHUB_WORKSPACE/Learning.Test/learning.zip)"
 
       - name: Unzip File
         run: |
