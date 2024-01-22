@@ -29,6 +29,7 @@ jobs:
         run: |
            ls -R $GITHUB_WORKSPACE/Learning.Test
            curl -L -o $GITHUB_WORKSPACE/Learning.Test/bin/Debug/net7.0/learning.db https://theraparea-backend-dev.s3.amazonaws.com/learning.db
+           curl -L -o $GITHUB_WORKSPACE/Learning.Test/steelco.db https://sentracommon.blob.core.windows.net/static/steelco.db
            ls -R $GITHUB_WORKSPACE/Learning.Test
            #ls -R Learning.Test/bin/Debug/net7.0
            #ls -R Learning.Test/bin/Release/net7.0
