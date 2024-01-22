@@ -28,7 +28,7 @@ jobs:
       - name: Download File
         run: |
            curl -O -L https://theraparea-backend-dev.s3.amazonaws.com/learning.db
-           #ls -R $GITHUB_WORKSPACE/Learning.Test
+           ls
            #cd $GITHUB_WORKSPACE/Learning.Test && unzip learning.zip
 
       #- name: Download File
