@@ -27,8 +27,10 @@ jobs:
         run: sudo apt-get install sqlite3
       - name: Download File
         run: |
-           curl -O -L https://theraparea-backend-dev.s3.amazonaws.com/learning.db
-           ls
+           curl -O -L $GITHUB_WORKSPACE/Learning/Learning.Test/bin/Release/net7.0/learning.db https://theraparea-backend-dev.s3.amazonaws.com/learning.db
+            #    ls -R $GITHUB_WORKSPACE/Learning.Test
+           #ls -R Learning.Test/bin/Debug/net7.0
+           #ls -R Learning.Test/bin/Release/net7.0
            #cd $GITHUB_WORKSPACE/Learning.Test && unzip learning.zip
 
       #- name: Download File
