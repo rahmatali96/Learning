@@ -2,8 +2,7 @@ name: Test and Build .NET Project with SQLite
 
 on:
    pull_request:
-      branches:
-      - [master, dev]
+      branches: [master, dev]
 
 jobs:
   build-and-test:
