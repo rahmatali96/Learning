@@ -21,7 +21,7 @@ jobs:
           dotnet-version: "7.0.x"
 
       - name: Build project
-        run: dotnet build Learning.sln --configuration Release
+        run: dotnet build Learning.sln --configuration Debug
 
       - name: Install SQLite
         run: sudo apt-get install sqlite3
