@@ -14,11 +14,7 @@ namespace Sentra.Test
             {
                 try
                 {
-                    string currentDirectory = Directory.GetCurrentDirectory();
-                    string fileName = "learning.db";
-                    var parentDirectory = Directory.GetParent(currentDirectory)?.Parent?.Parent;
-                    string filePath = Path.Combine(parentDirectory.FullName, fileName);
-                    string connectionString = $"Data Source={filePath};";
+                    string connectionString = $"Data Source=learning.db;";
                     var options = new DbContextOptionsBuilder<LearningDbContext>()
                         .UseSqlite(connectionString)
                         .Options;

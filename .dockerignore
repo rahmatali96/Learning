@@ -23,3 +23,5 @@
 **/values.dev.yaml
 LICENSE
 README.md
+
+/Learning.Test/bin/Debug/net7.0/learning.db
