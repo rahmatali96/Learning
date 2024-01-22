@@ -1,9 +1,6 @@
 name: Test and Build .NET Project with SQLite
 
 on:
-   push:
-      branches:
-      - master
    pull_request:
       branches:
       - master
@@ -57,11 +54,11 @@ jobs:
       - uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        #with:
-         # token: ${{ secrets.CODECOV_TOKEN }}
-          #directory: ${{ github.workspace }}
-          #files: ./coverage.xml
-          #flags: unittests
-          #name: codecov-learning
-          #fail_ci_if_error: true
-          #verbose: true
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ${{ github.workspace }}
+          files: ./coverage.xml
+          flags: unittests
+          name: codecov-learning
+          fail_ci_if_error: true
+          verbose: true
