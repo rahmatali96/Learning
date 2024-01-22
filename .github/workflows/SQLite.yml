@@ -3,7 +3,8 @@ name: Test and Build .NET Project with SQLite
 on:
    pull_request:
       branches: [master, dev]
-
+env:  
+    DOTNET_CLI_TELEMETRY_OPTOUT: '1'
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
