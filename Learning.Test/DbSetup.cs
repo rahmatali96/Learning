@@ -5,20 +5,25 @@ namespace Sentra.Test
 {
     public static class DbSetup
     {
-        private static LearningDbContext _context = new LearningDbContext();
         private static bool isAtatched = false;
+        private static TestDbContext _context;
 
-        public static LearningDbContext AttachDatabase()
+        public static TestDbContext AttachDatabase()
         {
             if (!isAtatched)
-            {
+            {   
                 try
                 {
                     string connectionString = $"Data Source=learning.db;";
-                    var options = new DbContextOptionsBuilder<LearningDbContext>()
+                    var options = new DbContextOptionsBuilder<TestDbContext>()
                         .UseSqlite(connectionString)
                         .Options;
-                    _context = new LearningDbContext(options);
+                    _context = new TestDbContext(options);
+                    _context.Tests.Add(new Learning.DbContextSetup.Test()
+                    {
+                        Name = "test",
+                    });
+                    _context.SaveChanges();
                 }
                 catch (Exception ex)
                 {
