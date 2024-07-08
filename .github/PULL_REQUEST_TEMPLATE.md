@@ -1,7 +1,6 @@
 **Linked Work Items**
 
 #issuenumber
-#issuenumber
 
 **Checklist**
 
