@@ -1,10 +1,11 @@
 name: Test and Build .NET Project with SQLite
 
 on:
-   pull_request:
-      branches: [master, dev]
-env:  
-    DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+  pull_request:
+    branches: [master, dev]
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -24,9 +25,23 @@ jobs:
         run: sudo apt-get install sqlite3
       - name: Download File
         run: |
-           ls -R $GITHUB_WORKSPACE/Learning.Test
-           curl -L -o $GITHUB_WORKSPACE/Learning.Test/bin/Debug/net7.0/learning.db https://theraparea-backend-dev.s3.amazonaws.com/learning.db
-           #ls -R $GITHUB_WORKSPACE/Learning.Test
+          curl -L -o $GITHUB_WORKSPACE/Learning.Test/bin/Debug/net7.0/learning.db https://theraparea-backend-dev.s3.amazonaws.com/learning.db
+          ls -R $GITHUB_WORKSPACE/Learning.Test
+
+      - name: Install EF Core tool
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Add Migrations
+        run: |
+          cd $GITHUB_WORKSPACE/Learning
+          dotnet ef migrations add 'Test' --context TestDbContext
+          ls -R $GITHUB_WORKSPACE/Learning.Test
+
+      - name: Add Update Database
+        run: |
+          cd $GITHUB_WORKSPACE/Learning
+          dotnet ef database update --context TestDbContext
+          ls -R $GITHUB_WORKSPACE/
 
       - name: Run tests
         run: |

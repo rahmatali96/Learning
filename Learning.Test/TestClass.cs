@@ -5,10 +5,9 @@ namespace Learning.Test
 {
     public class TestClass
     {
-        private LearningDbContext _context;
+        private TestDbContext _context;
         public TestClass()
         {
-            _context = new LearningDbContext();
         }
         [SetUp]
         public void Setup()
@@ -19,7 +18,15 @@ namespace Learning.Test
         [Test]
         public void Test1()
         {
+            Console.WriteLine(_context.Employees.Count());
             Assert.IsTrue(_context.Employees.Count() == 2);
+        }
+
+        [Test]
+        public void Test2()
+        {
+            Console.WriteLine(_context.Tests.Count());
+            Assert.IsTrue(_context.Tests.Count() == 1);
         }
     }
 }

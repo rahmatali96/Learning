@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<LearningDbContext>(options => options.UseSqlServer("Data Source=HP\\SQLEXPRESS;Initial Catalog=learning;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False"));
-
+builder.Services.AddDbContext<TestDbContext>(options => options.UseSqlite("Data Source=../Learning.Test//bin/Debug/net7.0/learning.db;"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
